@@ -11,7 +11,7 @@ const parseISODate = (date) => {
 
 // Set Luxon to use the UK locale globally
 Settings.defaultLocale = 'en-GB'; 
-Settings.defaultZone = 'utc';
+
 
 const departureAirports = [
    'LHR - London Heathrow Airport',
