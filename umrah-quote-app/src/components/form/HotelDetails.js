@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { Grid, Typography, FormControl, FormControlLabel, Radio, RadioGroup, TextField, Button, Divider, Autocomplete } from '@mui/material';
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { Settings } from 'luxon';
+import { Settings, DateTime } from 'luxon';
 import { addDays, format } from 'date-fns';
 
 
@@ -63,9 +63,10 @@ const getTotalBeds = useCallback(() => {
 
     // Calculate checkout date based on checkin and nights
     const getCheckoutDate = (checkin, nights) => {
-        if (!checkin || !nights) return '';
-        return format(addDays(new Date(checkin), nights), 'dd/MM/yyyy');
-      };
+      if (!checkin || !nights) return null;
+      const checkinDate = DateTime.fromISO(checkin);
+      return checkinDate.plus({ days: nights }).toISODate(); // Returns an ISO string
+    };
 
   // ... include other handlers and logic
 
@@ -114,20 +115,24 @@ const getTotalBeds = useCallback(() => {
 
         {/* Makkah Check-in and Check-out Dates */}
         <Grid item xs={12} sm={6}>
-          <DatePicker
-            label="Makkah Check In Date"
-            value={formik.values.makkahCheckIn}
-            onChange={(date) => formik.setFieldValue('makkahCheckIn', date)}
-            renderInput={(params) => <TextField {...params} />}
-          />
+        <DatePicker
+          label="Makkah Check In Date"
+          value={formik.values.makkahCheckIn ? DateTime.fromISO(formik.values.makkahCheckIn) : null}
+          onChange={(date) => formik.setFieldValue('makkahCheckIn', date ? date.toISO() : '')}
+          renderInput={(params) => <TextField {...params} />}
+        />
         </Grid>
         <Grid item xs={12} sm={6}>
           {/* Makkah Check Out Date - calculated based on check-in date and nights */}
           <DatePicker
-            label="Makkah Check Out Date"
-            value={addDays(new Date(formik.values.makkahCheckIn), formik.values.nightsInMakkah)}
-            renderInput={(params) => <TextField {...params} disabled />}
-          />
+          label="Makkah Check Out Date"
+          value={
+            formik.values.makkahCheckIn && formik.values.nightsInMakkah
+              ? DateTime.fromISO(getCheckoutDate(formik.values.makkahCheckIn, formik.values.nightsInMakkah))
+              : null
+          }
+          renderInput={(params) => <TextField {...params} disabled />}
+        />
         </Grid>
 
         {/* Makkah Hotel Refund Policy */}

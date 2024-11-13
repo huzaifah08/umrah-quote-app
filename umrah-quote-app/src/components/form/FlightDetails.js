@@ -7,7 +7,7 @@ import { Settings, DateTime } from 'luxon';
 // Safely parse an ISO date string and return a valid Luxon DateTime object or null
 const parseISODate = (date) => {
   return date ? DateTime.fromISO(date) : null;
-};
+}; 
 
 // Set Luxon to use the UK locale globally
 Settings.defaultLocale = 'en-GB'; 
@@ -28,11 +28,11 @@ const returnAirports = [
    'MED - Madinah Airport' ,
   
   // ... other airports
-];
+]; 
 
 
 
-/*const FormikMuiTextField = ({ formik, name, label, type = 'text', xs = 12, sm }) => {
+const FormikMuiTextField = ({ formik, name, label, type = 'text', xs = 12, sm }) => {
   return (
     <Grid item xs={xs} sm={sm}>
       <TextField
@@ -58,12 +58,12 @@ const returnAirports = [
       </TextField>
     </Grid>
   );
-}; */
+}; 
 
 
 
 function FlightDetails({ formik }) {
-  /*const [uploadedFile, setUploadedFile] = useState("");  // State to hold the uploaded file
+  const [uploadedFile, setUploadedFile] = useState("");  // State to hold the uploaded file
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
@@ -71,21 +71,21 @@ function FlightDetails({ formik }) {
       setUploadedFileName(file.name);
       formik.setFieldValue('flightTimeUpload', file);  // Update Formik state
     }
-  }; */
+  }; 
 
- /* useEffect(() => {
+  useEffect(() => {
       // Append file into Formik's state when it's uploaded
       if (uploadedFile) {
           formik.setFieldValue('flightTimeUpload', uploadedFile);
       }
   }, [uploadedFile, formik.setFieldValue]);
-  const [uploadedFileName, setUploadedFileName] = useState(""); */
+  const [uploadedFileName, setUploadedFileName] = useState(""); 
 
 
 
 // Whenever departureDate or returnDate change, recalculate total nights
 // Calculate the number of nights function
-/*const calculateNights = () => {
+const calculateNights = () => {
   const startDate = formik.values.departureDate;
   const endDate = formik.values.returnDate;
   if (startDate && endDate) {
@@ -101,22 +101,22 @@ function FlightDetails({ formik }) {
 useEffect(() => {
   const totalNights = calculateNights();
   formik.setFieldValue('totalNights', totalNights);
-}, [formik.values.departureDate, formik.values.returnDate]); */
+}, [formik.values.departureDate, formik.values.returnDate]); 
 
 
 
 
-  return (
-    <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}>
-      <Typography variant="h5" gutterBottom>
+ return (
+  <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}> 
+      <Typography variant="h5" gutterBottom> 
         Flight Details
-      </Typography>
+      </Typography> 
       <Grid container spacing={2}>
         {/* First row */}
-        {/*<FormikMuiTextField formik={formik} name="airline" label="Airline" xs={3} /> */}
-        {/*<FormikMuiTextField formik={formik} name="flightType" label="Direct flight or indirect" xs={3} /> */}
-        <Grid item xs={3}>
-          {/*<Autocomplete
+        <FormikMuiTextField formik={formik} name="airline" label="Airline" xs={3} /> 
+        <FormikMuiTextField formik={formik} name="flightType" label="Direct flight or indirect" xs={3} /> 
+        <Grid item xs={3}> 
+          <Autocomplete
             id="departureAirport"
             name="departureAirport"
             options={departureAirports}
@@ -147,12 +147,12 @@ useEffect(() => {
                 }}
               />
             )}
-          /> */}
-        </Grid>
+          />
+        </Grid> 
 
         {/* Regular dropdown for return airport */}
-        <Grid item xs={3}>
-        {/*<Autocomplete
+        <Grid item xs={3}> 
+        <Autocomplete
             id="returnAirport"
             name="returnAirport"
             options={returnAirports}
@@ -186,13 +186,13 @@ useEffect(() => {
               />
             )}
 
-          /> */}
+          /> 
 
 
-        </Grid>
+        </Grid> 
 
         {/* Second row */}
-        {/*<Grid item xs={12}>
+        <Grid item xs={12}>
           <FormControl component="fieldset">
             <FormLabel component="legend">Flight Refund Policy</FormLabel>
             <RadioGroup
@@ -205,14 +205,13 @@ useEffect(() => {
               <FormControlLabel value="Non-refundable" control={<Radio />} label="Non-refundable" />
             </RadioGroup>
           </FormControl>
-        </Grid> */}
-
+        </Grid> 
         {/* Third row */}
         {/* Departure Date and Time */}
         
-        <Grid item xs={6}>
+         <Grid item xs={6}>
         
-        {/*<DatePicker
+        <DatePicker
         label="Departure Date"
         name="departureDate"
         value={formik.values.departureDate ? DateTime.fromISO(formik.values.departureDate) : null}
@@ -234,10 +233,10 @@ useEffect(() => {
         }}
         inputFormat="dd/MM/yyyy"
         fullWidth
-      /> */}
+      /> 
         </Grid> 
 
-        {/*<Grid item xs={6}>
+        <Grid item xs={6}>
           <TextField
             fullWidth
             multiline
@@ -276,7 +275,7 @@ useEffect(() => {
         
         {/* Return Date and Time */}
         <Grid item xs={6}>
-        {/*<DatePicker
+        <DatePicker
           label="Return Date"
           name="returnDate"
           value={formik.values.departureDate ? DateTime.fromISO(formik.values.returnDate) : null}
@@ -298,9 +297,9 @@ useEffect(() => {
           }}
           inputFormat="dd/MM/yyyy"
           fullWidth
-        /> */}
-        </Grid>  
-        {/*<Grid item xs={6}>
+        /> 
+        </Grid>
+        <Grid item xs={6}>
           <TextField
             fullWidth
             multiline
@@ -332,11 +331,11 @@ useEffect(() => {
               }
             }}
           />
-      </Grid > */}
+      </Grid >
         
         {/* File Upload */}
         <Grid item xs={12} display="flex" alignItems="center">
-        {/*<Stack direction="column" spacing={2} alignItems="start">
+        <Stack direction="column" spacing={2} alignItems="start">
             <Typography variant="body1">Flight Time Upload</Typography>
             <Button
               variant="contained"
@@ -356,11 +355,11 @@ useEffect(() => {
             <Typography variant="body1" sx={{ flexGrow: 1 }}>
               {uploadedFileName}
             </Typography>
-          )} */}
-        </Grid>
+          )} 
+        </Grid> 
 
         {/* Sixth row */}
-        {/*<Grid item xs={12}>
+        <Grid item xs={12}>
           <TextField
             fullWidth
             label="Total Nights"
@@ -371,10 +370,11 @@ useEffect(() => {
               readOnly: true,
             }}
           />
-        </Grid> */}
+        </Grid> 
       </Grid>
-  </LocalizationProvider>
-  );
-}
+  </LocalizationProvider> 
+  ); 
+} 
+
 
 export default FlightDetails;

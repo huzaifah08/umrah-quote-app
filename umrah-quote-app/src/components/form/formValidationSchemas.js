@@ -41,22 +41,22 @@ export const validationSchemas = [
   }),
   // Flight Details Validation
    Yup.object({
-    //airline: Yup.string().required('Airline is required'),
-    //flightType: Yup.string(), // Direct flight or not is not required and thus not included
-    //departureAirport: Yup.string().required('Departure airport is required'),
-    //returnAirport: Yup.string().required('Return airport is required'),
-    //flightRefundPolicy: Yup.string(), // Refund policy is not required
-    /*departureDate: Yup.date()
+    airline: Yup.string().required('Airline is required'),
+    flightType: Yup.string(), // Direct flight or not is not required and thus not included
+    departureAirport: Yup.string().required('Departure airport is required'),
+    returnAirport: Yup.string().required('Return airport is required'),
+    flightRefundPolicy: Yup.string(), // Refund policy is not required
+    departureDate: Yup.date()
     .nullable()
-    .required('Departure date is required'), */
-    //departureFlightTime: Yup.string(), // Departure flight time is not required
-    /*returnDate: Yup.date()
+    .required('Departure date is required'), 
+    departureFlightTime: Yup.string(), // Departure flight time is not required
+    returnDate: Yup.date()
     .nullable()
-    .required('Return date is required'), */
-    //returnFlightTime: Yup.string(), // Return flight time is not required
+    .required('Return date is required'), 
+    returnFlightTime: Yup.string(), // Return flight time is not required
     // Assuming flightTimeUpload is the name of the field for the file upload
-    // flightTimeUpload: Yup.mixed(), // File upload is not required
-    //totalNights: Yup.number().min(1, 'There must be at least one total night').required('Total nights is required'),
+    flightTimeUpload: Yup.mixed(), // File upload is not required
+    totalNights: Yup.number().min(1, 'There must be at least one total night').required('Total nights is required'),
   }) 
   // Additional schemas for other sections can follow the same pattern
 ]; 
