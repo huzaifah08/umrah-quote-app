@@ -1,0 +1,76 @@
+/* Overall App Styling */
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header Styling */
+.App-header {
+  background-color: #eeeeee; /* Dark grey background */
+  padding: 1rem 2rem; /* Add some padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Distribute space between logo and nav items */
+}
+
+/* Logo Styling */
+.App-logo {
+  height: auto;
+  width: 120px; /* Adjust based on your logo */
+  pointer-events: none;
+}
+
+/* Navigation Links Styling */
+.App-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+
+
+
+.App-link {
+  color: #25327B; /* Normal state color */
+  margin: 0 15px; /* Space between links */
+  text-decoration: none; /* Remove underline */
+  font-weight: bold; /* Make text bold */
+}
+
+.App-link:link, .App-link:visited {
+  color: #25327B; /* Color for unvisited and visited links */
+}
+
+.App-link:hover, .App-link:active {
+  color: #137191; /* Color change on hover and when active/clicked */
+}
+
+/* Content Area Styling */
+.App-content {
+  flex-grow: 1; /* Allow content area to grow */
+  width: 100%;
+  max-width: 960px; /* Set a max-width for content */
+  margin: 20px auto; /* Center the content with auto margins */
+  padding: 20px; /* Add some padding */
+}
+
+
+
+
+
+
+
+
+
+/* Animation for the logo */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,198 @@
+// quotebuiilder.js
+import React, { useState } from 'react';
+import { useFormik } from 'formik';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import { validationSchemas } from './form/formValidationSchemas';
+
+import ConsultantDetails from './form/ConsultantDetails';
+import CustomerDetails from './form/CustomerDetails';
+import PackageDetails from './form/PackageDetails';
+import PassengerDetails from './form/PassengerDetails';
+import FlightDetails from './form/FlightDetails';
+import './App.css';
+
+
+const TOTAL_STEPS = 8;
+
+function QuoteBuilder() {
+    const [step, setStep] = useState(0);
+    const [validatedSteps, setValidatedSteps] = useState([0]);
+    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const formik = useFormik({
+        initialValues: {
+            consultantInitials: '',
+            travelConsultant: '',
+            consultantMobile: '',
+            firstName: '',
+            lastName: '',
+            email: '',
+            phoneNumber: '',
+            packageIncludes: [],
+            notes: '',
+            adults: '0',
+            youth: '0',
+            child: '0',
+            infant: '0',
+            airline: '',
+            flightType: '',
+            departureAirport: '',
+            returnAirport: '',
+            flightRefundPolicy: '',
+            departureDate: null,
+            departureFlightTime: '',
+            returnDate: null,
+            returnFlightTime: '',
+            
+
+
+        },
+        validationSchema: validationSchemas[step],
+        onSubmit: (values) => {
+            const isLastStep = step === TOTAL_STEPS - 1;
+            if (!validatedSteps.includes(step + 1)) {
+                setValidatedSteps(prev => [...prev, step + 1]);
+            }
+
+            if (isLastStep) {
+                handleSubmit(values);
+            } else {
+                setStep(step + 1);
+            }
+        },
+    });
+
+    const handleSubmit = async (finalData) => {
+        const preparedData = {
+            ...finalData,
+            packageIncludes: finalData.packageIncludes.join(', ')  // Convert array into comma-separated string
+        };
+
+        try {
+            const response = await fetch('http://localhost:3001/submit-quote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(preparedData),
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('Submission successful', data);
+                setIsSubmitted(true);
+            } else {
+                console.error('Submission failed:', data.message);
+            }
+        } catch (error) {
+            console.error('Request failed:', error);
+        }
+    };
+
+    const resetFormAndState = () => {
+        formik.resetForm();
+        setStep(0);
+        setValidatedSteps([0]);
+        setIsSubmitted(false);
+    };
+
+    const ProgressBar = ({ onClick, stepTitles }) => (
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                {stepTitles.map((title, i) => (
+                    <Typography
+                        key={i}
+                        variant="caption"
+                        sx={{
+                            width: `${100 / stepTitles.length}%`,
+                            textAlign: 'center',
+                            color: i <= step ? 'primary.main' : 'grey.500',
+                        }}
+                    >
+                        {title}
+                    </Typography>
+                ))}
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center', gap: '2px', width: '100%' }}>
+                {Array.from({ length: TOTAL_STEPS }, (_, i) => (
+                    <Box
+                        key={i}
+                        sx={{
+                            width: `${100 / TOTAL_STEPS}%`,
+                            height: '20px',
+                            bgcolor: i <= step ? 'primary.main' : 'grey.300',
+                            '&:hover': {
+                                bgcolor: validatedSteps.includes(i) ? 'secondary.light' : '',
+                                cursor: validatedSteps.includes(i) ? 'pointer' : 'default',
+                            },
+                        }}
+                        onClick={() => onClick(i)}
+                    />
+                ))}
+            </Box>
+        </Box>
+    );
+
+    if (isSubmitted) {
+        return (
+            <Box sx={{ mt: 2, textAlign: 'center' }}>
+                <Typography variant="h6">Submission successful!</Typography>
+                <Button variant="contained" onClick={resetFormAndState}>New Quote</Button>
+            </Box>
+        );
+    }
+
+    const handleProgressBarClick = (index) => {
+        if (validatedSteps.includes(index)) {
+            setStep(index);
+        }
+    };
+
+    const canProceedToNextStep = () => {
+        return formik.isValid || validatedSteps.includes(step + 1);
+    };
+
+    const renderStep = () => {
+        switch (step) {
+            case 0: return <ConsultantDetails formik={formik} />;
+            case 1: return <CustomerDetails formik={formik} />;
+            case 2: return <PackageDetails formik={formik} />;
+            case 3: return <PassengerDetails formik={formik} />;
+            case 4: return <FlightDetails formik={formik} />;
+            default: return <div>Step {step + 1}</div>;
+        }
+    };
+
+    return (
+        <div className="App-content">
+            <ProgressBar onClick={handleProgressBarClick} stepTitles={[
+                "Consultant Details",
+                "Customer Details",
+                "Package Details",
+                "Passenger Details",
+                "Flight Details",
+                "Hotel Details",
+                "Other Details",
+                "Summary & Pricing"
+            ]} />
+            <form onSubmit={formik.handleSubmit}>
+                {renderStep()}
+                <Box sx={{ mt: 2 }}>
+                    <Button variant="outlined" onClick={() => setStep(step - 1)} disabled={step === 0}>
+                        Previous
+                    </Button>
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        sx={{ ml: 2 }}
+                        disabled={!canProceedToNextStep()}
+                    >
+                        {step === TOTAL_STEPS - 1 ? 'Submit' : 'Next'}
+                    </Button>
+                </Box>
+            </form>
+        </div>
+    );
+}
+
+export default QuoteBuilder;
