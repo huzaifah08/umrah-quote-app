@@ -45,15 +45,15 @@ function QuoteBuilder() {
             infant: '0',
             airline: '',
             flightType: '',
-            departureAirport: null,
-            returnAirport: null,
+            //departureAirport: null,
+            //returnAirport: null,
             flightRefundPolicy: '',
-            departureDate: null,
+            //departureDate: null,
             departureFlightTime: '',
-            returnDate: null,
+            //returnDate: null,
             returnFlightTime: '',
             flightTimeUpload: '',
-            totalNights: '0',
+            //totalNights: '0',
             
 
 

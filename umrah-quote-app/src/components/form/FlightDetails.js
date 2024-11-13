@@ -116,7 +116,7 @@ useEffect(() => {
         <FormikMuiTextField formik={formik} name="airline" label="Airline" xs={3} />
         <FormikMuiTextField formik={formik} name="flightType" label="Direct flight or indirect" xs={3} />
         <Grid item xs={3}>
-          <Autocomplete
+          {/*<Autocomplete
             id="departureAirport"
             name="departureAirport"
             options={departureAirports}
@@ -147,12 +147,12 @@ useEffect(() => {
                 }}
               />
             )}
-          />
+          /> */}
         </Grid>
 
         {/* Regular dropdown for return airport */}
         <Grid item xs={3}>
-        <Autocomplete
+        {/*<Autocomplete
             id="returnAirport"
             name="returnAirport"
             options={returnAirports}
@@ -186,7 +186,7 @@ useEffect(() => {
               />
             )}
 
-          />
+          /> */}
 
 
         </Grid>
@@ -212,7 +212,7 @@ useEffect(() => {
         
         <Grid item xs={6}>
         
-        <DatePicker
+        {/*<DatePicker
         label="Departure Date"
         name="departureDate"
         value={formik.values.departureDate ? DateTime.fromISO(formik.values.departureDate) : null}
@@ -234,7 +234,7 @@ useEffect(() => {
         }}
         inputFormat="dd/MM/yyyy"
         fullWidth
-      /> 
+      /> */}
         </Grid> 
 
         <Grid item xs={6}>
@@ -276,7 +276,7 @@ useEffect(() => {
         
         {/* Return Date and Time */}
         <Grid item xs={6}>
-        <DatePicker
+        {/*<DatePicker
           label="Return Date"
           name="returnDate"
           value={formik.values.departureDate ? DateTime.fromISO(formik.values.returnDate) : null}
@@ -298,7 +298,7 @@ useEffect(() => {
           }}
           inputFormat="dd/MM/yyyy"
           fullWidth
-        />
+        /> */}
         </Grid>  
         <Grid item xs={6}>
           <TextField
@@ -360,7 +360,7 @@ useEffect(() => {
         </Grid>
 
         {/* Sixth row */}
-        <Grid item xs={12}>
+        {/*<Grid item xs={12}>
           <TextField
             fullWidth
             label="Total Nights"
@@ -371,7 +371,7 @@ useEffect(() => {
               readOnly: true,
             }}
           />
-        </Grid> 
+        </Grid> */}
       </Grid>
   </LocalizationProvider>
   );
