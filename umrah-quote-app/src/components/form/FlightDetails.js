@@ -7,7 +7,7 @@ import { Settings, DateTime } from 'luxon';
 // Safely parse an ISO date string and return a valid Luxon DateTime object or null
 const parseISODate = (date) => {
   return date ? DateTime.fromISO(date) : null;
-};
+}; 
 
 // Set Luxon to use the UK locale globally
 Settings.defaultLocale = 'en-GB'; 
@@ -28,7 +28,7 @@ const returnAirports = [
    'MED - Madinah Airport' ,
   
   // ... other airports
-];
+]; 
 
 
 
@@ -58,7 +58,7 @@ const FormikMuiTextField = ({ formik, name, label, type = 'text', xs = 12, sm })
       </TextField>
     </Grid>
   );
-};
+}; 
 
 
 
@@ -71,7 +71,7 @@ function FlightDetails({ formik }) {
       setUploadedFileName(file.name);
       formik.setFieldValue('flightTimeUpload', file);  // Update Formik state
     }
-  };
+  }; 
 
   useEffect(() => {
       // Append file into Formik's state when it's uploaded
@@ -79,7 +79,7 @@ function FlightDetails({ formik }) {
           formik.setFieldValue('flightTimeUpload', uploadedFile);
       }
   }, [uploadedFile, formik.setFieldValue]);
-  const [uploadedFileName, setUploadedFileName] = useState("");
+  const [uploadedFileName, setUploadedFileName] = useState(""); 
 
 
 
@@ -106,16 +106,16 @@ useEffect(() => {
 
 
 
-  return (
-    <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}>
-      <Typography variant="h5" gutterBottom>
+ return (
+  <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}> 
+      <Typography variant="h5" gutterBottom> 
         Flight Details
-      </Typography>
+      </Typography> 
       <Grid container spacing={2}>
         {/* First row */}
-        <FormikMuiTextField formik={formik} name="airline" label="Airline" xs={3} />
-        <FormikMuiTextField formik={formik} name="flightType" label="Direct flight or indirect" xs={3} />
-        <Grid item xs={3}>
+        <FormikMuiTextField formik={formik} name="airline" label="Airline" xs={3} /> 
+        <FormikMuiTextField formik={formik} name="flightType" label="Direct flight or indirect" xs={3} /> 
+        <Grid item xs={3}> 
           <Autocomplete
             id="departureAirport"
             name="departureAirport"
@@ -148,10 +148,10 @@ useEffect(() => {
               />
             )}
           />
-        </Grid>
+        </Grid> 
 
         {/* Regular dropdown for return airport */}
-        <Grid item xs={3}>
+        <Grid item xs={3}> 
         <Autocomplete
             id="returnAirport"
             name="returnAirport"
@@ -186,10 +186,10 @@ useEffect(() => {
               />
             )}
 
-          />
+          /> 
 
 
-        </Grid>
+        </Grid> 
 
         {/* Second row */}
         <Grid item xs={12}>
@@ -205,12 +205,11 @@ useEffect(() => {
               <FormControlLabel value="Non-refundable" control={<Radio />} label="Non-refundable" />
             </RadioGroup>
           </FormControl>
-        </Grid>
-
+        </Grid> 
         {/* Third row */}
         {/* Departure Date and Time */}
         
-        <Grid item xs={6}>
+         <Grid item xs={6}>
         
         <DatePicker
         label="Departure Date"
@@ -298,8 +297,8 @@ useEffect(() => {
           }}
           inputFormat="dd/MM/yyyy"
           fullWidth
-        />
-        </Grid>  
+        /> 
+        </Grid>
         <Grid item xs={6}>
           <TextField
             fullWidth
@@ -356,8 +355,8 @@ useEffect(() => {
             <Typography variant="body1" sx={{ flexGrow: 1 }}>
               {uploadedFileName}
             </Typography>
-          )}
-        </Grid>
+          )} 
+        </Grid> 
 
         {/* Sixth row */}
         <Grid item xs={12}>
@@ -373,8 +372,9 @@ useEffect(() => {
           />
         </Grid> 
       </Grid>
-  </LocalizationProvider>
-  );
-}
+  </LocalizationProvider> 
+  ); 
+} 
+
 
 export default FlightDetails;

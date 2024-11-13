@@ -52,7 +52,7 @@ export const validationSchemas = [
     departureFlightTime: Yup.string(), // Departure flight time is not required
     returnDate: Yup.date()
     .nullable()
-    .required('Return date is required'),
+    .required('Return date is required'), 
     returnFlightTime: Yup.string(), // Return flight time is not required
     // Assuming flightTimeUpload is the name of the field for the file upload
     flightTimeUpload: Yup.mixed(), // File upload is not required

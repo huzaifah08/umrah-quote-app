@@ -15,10 +15,10 @@ import HotelDetails from './form/HotelDetails';
 import './App.css';
 
 
-import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
-import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
-import { Settings, DateTime } from 'luxon';
-Settings.defaultLocale = 'en-GB'; // Set Luxon to use the UK locale globally
+//import { AdapterLuxon } from '@mui/x-date-pickers/AdapterLuxon';
+//import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
+//import { Settings, DateTime } from 'luxon';
+//Settings.defaultLocale = 'en-GB'; // Set Luxon to use the UK locale globally
 
 
 const TOTAL_STEPS = 8;
@@ -74,6 +74,7 @@ function QuoteBuilder() {
     });
 
     const handleSubmit = async (finalData) => {
+        console.log(formik.values)
         // Create a FormData object to handle data submission via multipart/form-data
         const formData = new FormData();
         
@@ -184,7 +185,7 @@ function QuoteBuilder() {
     };
 
     return (
-        <LocalizationProvider dateAdapter={AdapterLuxon}>
+        //<LocalizationProvider dateAdapter={AdapterLuxon}>
         <div className="App-content">
             <ProgressBar onClick={handleProgressBarClick} stepTitles={[
                 "Consultant Details",
@@ -213,7 +214,7 @@ function QuoteBuilder() {
                 </Box>
             </form>
         </div>
-        </LocalizationProvider>
+        //</LocalizationProvider>
     );
 }
 

@@ -119,15 +119,15 @@ app.post('/submit-quote', upload.single('flightTimeUpload'), async (req, res) =>
       totalPassengers,
       airline,
       flightType,
-      departureAirport,
-      returnAirport,
+      //departureAirport,
+      //returnAirport,
       flightRefundPolicy,
-      departureDate,
+      //departureDate,
       departureFlightTime,
-      returnDate,
+      //returnDate,
       returnFlightTime,
-      flightTimeUpload,
-      totalNights,
+      //flightTimeUpload,
+      //totalNights,
       // Include all other fields from your form
     } = req.body;
     
