@@ -63,14 +63,15 @@ const getTotalBeds = useCallback(() => {
 
     // Calculate checkout date based on checkin and nights
     const getCheckoutDate = (checkin, nights) => {
-        if (!checkin || !nights) return '';
-        return format(addDays(new Date(checkin), nights), 'dd/MM/yyyy');
-      };
+      if (!checkin || !nights) return null;
+      const checkinDate = DateTime.fromISO(checkin);
+      return checkinDate.plus({ days: nights }).toISODate(); // Returns an ISO string
+    };
 
   // ... include other handlers and logic
-
+  console.log(formik.values)
   return (
-  <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}>
+    <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}>
       <Typography variant="h5" gutterBottom>Hotel Details</Typography>
       <Grid container spacing={2}>
         {/* Display departure and return dates from formik state */}
@@ -84,9 +85,9 @@ const getTotalBeds = useCallback(() => {
           <FormControl component="fieldset">
             <RadioGroup
               row
-              name="cityFirst"
+              name="firstDestination"
               onChange={formik.handleChange}
-              value={formik.values.cityFirst}
+              value={formik.values.firstDestination}
             >
               <FormControlLabel value="Makkah" control={<Radio />} label="Makkah First" />
               <FormControlLabel value="Madinah" control={<Radio />} label="Madinah First" />
@@ -104,31 +105,37 @@ const getTotalBeds = useCallback(() => {
         {/* Hotel Rating */}
         <Grid item xs={12} sm={4}>
           <Autocomplete
+            name="makkahHotelRating"
             options={hotelRatings}
             renderInput={(params) => <TextField {...params} label="Makkah Hotel Rating" />}
-            value={formik.values.hotelRating}
-            onChange={(_, newValue) => formik.setFieldValue('hotelRating', newValue)}
+            value={formik.values.makkahHotelRating || null}
+            onChange={(_, newValue) => formik.setFieldValue('makkahHotelRating', newValue)}
             fullWidth
           />
         </Grid>
 
         {/* Makkah Check-in and Check-out Dates */}
         <Grid item xs={12} sm={6}>
-          <DatePicker
-            label="Makkah Check In Date"
-            value={formik.values.makkahCheckIn}
-            onChange={(date) => formik.setFieldValue('makkahCheckIn', date)}
-            renderInput={(params) => <TextField {...params} />}
-            inputFormat="dd/MM/yyyy"
-          />
+        <DatePicker
+          name="makkahCheckInDate"
+          label="Makkah Check In Date"
+          value={formik.values.makkahCheckInDate ? DateTime.fromISO(formik.values.makkahCheckInDate) : null}
+          onChange={(date) => formik.setFieldValue('makkahCheckInDate', date ? date.toISO() : '')}
+          renderInput={(params) => <TextField {...params} />}
+        />
         </Grid>
         <Grid item xs={12} sm={6}>
           {/* Makkah Check Out Date - calculated based on check-in date and nights */}
           <DatePicker
-            label="Makkah Check Out Date"
-            value={addDays(new Date(formik.values.makkahCheckIn), formik.values.nightsInMakkah)}
-            renderInput={(params) => <TextField {...params} disabled />}
-          />
+          name="makkahCheckOutDate"
+          label="Makkah Check Out Date"
+          value={
+            formik.values.makkahCheckInDate && formik.values.nightsInMakkah
+              ? DateTime.fromISO(getCheckoutDate(formik.values.makkahCheckInDate, formik.values.nightsInMakkah))
+              : null
+          }
+          renderInput={(params) => <TextField {...params} disabled />}
+        />
         </Grid>
 
         {/* Makkah Hotel Refund Policy */}
@@ -142,14 +149,16 @@ const getTotalBeds = useCallback(() => {
             <RoomDivider title={`Room ${index + 1}`} />
             <Grid item xs={6}>
               <Autocomplete
+                name="makkahRoomType"
                 options={roomTypes}
                 getOptionLabel={(option) => option.label}
                 renderInput={(params) => <TextField {...params} label="Makkah Room Type" />}
-                value={makkahRooms[index].roomType}
+                value={roomTypes.find(rt => rt.label === makkahRooms[index].roomType) || null}
                 onChange={(_, newValue) => {
                   const newRooms = [...makkahRooms];
                   newRooms[index].roomType = newValue ? newValue.label : '';
                   setMakkahRooms(newRooms);
+                  formik.setFieldValue(`makkahRooms[${index}].roomType`, newValue ? newValue.label : '');
                 }}
                 fullWidth
               />
@@ -169,9 +178,7 @@ const getTotalBeds = useCallback(() => {
               />
               
             </Grid>
-            <Grid item xs={12}>
-            <Divider/>
-            </Grid>
+
             {makkahRooms.length > 1 && (
               <Grid item xs={12}>
                 <Button onClick={() => removeRoom(setMakkahRooms, index)}>Remove Room</Button>
@@ -181,12 +188,16 @@ const getTotalBeds = useCallback(() => {
           </React.Fragment>
         ))}
         <Grid item xs={12}>
+            <Divider/>
+        </Grid>
+        <Grid item xs={12}>
           <Button onClick={() => addRoom(setMakkahRooms)}>Add Room</Button>
         </Grid>
 
         {/* Room counts */}
         <Grid item xs={4}>
           <TextField
+            name="totalRoomsMakkah"
             label="Total Rooms in Makkah"
             type="number"
             value={getRoomCount()}
@@ -200,14 +211,15 @@ const getTotalBeds = useCallback(() => {
           <TextField
             label="No. of extra infant beds in Makkah"
             type="number"
-            value={formik.values.extraInfantBeds}
+            value={formik.values.extraInfantBedsMakkah}
             onChange={formik.handleChange}
-            name="extraInfantBeds"
+            name="extraInfantBedsMakkah"
             fullWidth
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
+            name="totalBedsMakkah"
             label="Total Beds in Makkah"
             type="number"
             value={getTotalBeds()}
@@ -223,8 +235,7 @@ const getTotalBeds = useCallback(() => {
 
 
       </Grid>
-    
-  </LocalizationProvider>
+    </LocalizationProvider>
   );
 }
 
