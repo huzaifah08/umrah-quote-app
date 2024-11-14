@@ -93,7 +93,7 @@ function ViewQuote() {
         <Typography>Phone Number: {quote.phone_number}</Typography>
         <Typography>Departure Date: {new Date(quote.departure_date).toLocaleDateString()}</Typography>
         <Typography>Return Date: {new Date(quote.return_date).toLocaleDateString()}</Typography>
-        {/*<Typography>Grand Total: £{quote.grand_total ? quote.grand_total.toFixed(2) : '0.00'}</Typography>              
+        <Typography>Grand Total: £{quote.grand_total}</Typography>              
         {/* Add other fields as needed */}
         <Button variant="contained" color="primary" onClick={() => navigate(`/edit-quote/${id}`)}>
           Edit Quote

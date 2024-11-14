@@ -5,6 +5,7 @@ import 'react-resizable/css/styles.css';
 
 function PackageDetails({ formik }) {
   // Helper function to toggle checkbox values
+  
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
     const currentValues = formik.values.packageIncludes || [];
@@ -13,6 +14,7 @@ function PackageDetails({ formik }) {
     } else {
       formik.setFieldValue('packageIncludes', currentValues.filter(item => item !== name));
     }
+    
   };
 
 
@@ -27,6 +29,8 @@ function PackageDetails({ formik }) {
       <Grid container spacing={1}>
         <Grid item xs={6} sm={4} md={1.3}>
           <FormControlLabel
+            error={formik.touched.packageIncludes && Boolean(formik.errors.packageIncludes)}
+            helperText={formik.touched.packageIncludes && formik.errors.packageIncludes}
             control={
               <Checkbox
                 name="Flights"
@@ -47,6 +51,7 @@ function PackageDetails({ formik }) {
                 name="Hotels"
                 checked={formik.values.packageIncludes?.includes('Hotels') || false}
                 onChange={handleCheckboxChange}
+
               />
             }
             label="Hotels"

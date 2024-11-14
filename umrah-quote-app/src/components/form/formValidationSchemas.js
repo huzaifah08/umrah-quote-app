@@ -24,6 +24,7 @@ export const validationSchemas = [
       .of(Yup.string())
       .min(1, 'At least one package option is required') // Require at least one checkbox
       .required('At least one package option is required'),
+     
     notes: Yup.string()
       .nullable(true) // Notes are optional and can be null
   }),
@@ -57,8 +58,39 @@ export const validationSchemas = [
     // Assuming flightTimeUpload is the name of the field for the file upload
     flightTimeUpload: Yup.mixed(), // File upload is not required
     totalNights: Yup.number().min(1, 'There must be at least one total night').required('Total nights is required'),
-  }) 
+  }),
   // Additional schemas for other sections can follow the same pattern
-]; 
+
+  // Hotel Details Validation
+  Yup.object({
+    firstDestination: Yup.string().required('First destination is required'),
+    makkahHotel: Yup.string()
+      .required('Makkah hotel is required'),
+    nightsInMakkah: Yup.number()
+      .required('Number of nights in Makkah is required')
+      .positive('Number of nights must be greater than zero')
+      .integer('Number of nights must be an integer'),
+    makkahHotelRating: Yup.string()
+      .required('Makkah hotel rating is required'),
+    makkahCheckInDate: Yup.date()
+      .nullable(), // Not required, allows null
+    makkahCheckOutDate: Yup.date()
+      .nullable(), // Not required, allows null
+    makkahRoomType: Yup.string()
+      .required('Makkah room type is required'),
+    makkahBoardType: Yup.string()
+      .required('Makkah board type is required'),
+    totalRoomsMakkah: Yup.number()
+      .nullable(), // Not required
+    extraInfantBedsMakkah: Yup.number()
+      .nullable() // Not required, default value can be handled separately in your form setup
+      .default(0),
+    totalBedsMakkah: Yup.number()
+      .required('Total beds in Makkah are required')
+      .positive('Total beds must be greater than zero')
+      .integer('Total beds must be an integer'),
+  }),
+
+];
 
 export default validationSchemas;

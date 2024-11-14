@@ -104,7 +104,7 @@ function QuoteEntries() {
                 <TableCell>{new Date(quote.departure_date).toLocaleDateString()}</TableCell>
                 <TableCell>{new Date(quote.return_date).toLocaleDateString()}</TableCell>
                 <TableCell>{quote.total_nights}</TableCell>
-                {/*<TableCell>£{quote.grand_total ? quote.grand_total.toFixed(0) : '0.00'}</TableCell>*/}
+                <TableCell>£{quote.grand_total}</TableCell>
                 <TableCell>{new Date(quote.created_at).toLocaleDateString()}</TableCell>
                 <TableCell>
                   <Button

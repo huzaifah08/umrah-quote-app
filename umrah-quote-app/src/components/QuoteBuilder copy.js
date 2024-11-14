@@ -118,6 +118,9 @@ function QuoteBuilder() {
 
         },
         validationSchema: validationSchemas[step],
+        validateOnBlur: false, // Validate when the user leaves a field
+        validateOnChange: false, // Do not validate while typing
+        validateOnMount: false, // Do not run validation when the form mounts
         onSubmit: (values) => {
             const isLastStep = step === TOTAL_STEPS - 1;
             if (!validatedSteps.includes(step + 1)) {
