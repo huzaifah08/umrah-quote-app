@@ -22,7 +22,7 @@ function Header({ isLoggedIn, onLogout }) {
       <nav className="App-nav">
         <Link to="/quote-builder" className="App-link">Umrah Quote Builder</Link>
         <Link to="/quote-entries" className="App-link">Umrah Quote Entries</Link>
-
+        <Link to="/date-picker" className="App-link">DatePicker</Link>
 
       </nav>
       {isLoggedIn && (

@@ -105,7 +105,7 @@ useEffect(() => {
 
 
 
-console.log(formik.values)
+
  return (
   <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}> 
       <Typography variant="h5" gutterBottom> 
@@ -116,62 +116,77 @@ console.log(formik.values)
         <FormikMuiTextField formik={formik} name="airline" label="Airline" xs={3} /> 
         <FormikMuiTextField formik={formik} name="flightType" label="Direct flight or indirect" xs={3} /> 
         <Grid item xs={3}> 
-        <Autocomplete
-        id="departureAirport"
-        name="departureAirport"
-        options={departureAirports}
-        value={formik.values.departureAirport || null} // Ensure a valid default value
-        onChange={(event, newValue) => {
-          formik.setFieldValue('departureAirport', newValue || null); // Handle null case
-        }}
-        onBlur={() => formik.setFieldTouched('departureAirport')}
-        getOptionLabel={(option) => option} // Using the option string directly
-        fullWidth
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Departure Airport"
-            variant="outlined"
-            error={formik.touched.departureAirport && Boolean(formik.errors.departureAirport)}
-            helperText={formik.touched.departureAirport && formik.errors.departureAirport}
-            InputLabelProps={{ shrink: true }} // Ensures the label doesn't overlap with the value
-            inputProps={{
-              ...params.inputProps,
-              autoComplete: 'new-password', // Disables autocomplete and autofill
+          <Autocomplete
+            id="departureAirport"
+            name="departureAirport"
+            options={departureAirports}
+            isOptionEqualToValue={(option, value) => option === value} // Custom equality check
+            value={formik.values.departureAirport || null} // Ensure a valid default value
+            onChange={(event, newValue) => {
+              // Ensure that the newValue is a string or null/undefined.
+              // If your options are objects, you may need to extract the string value.
+              formik.setFieldValue('departureAirport', newValue);
             }}
+            onBlur={() => formik.setFieldTouched('departureAirport')}
+            getOptionLabel={(option) => option} // if your options are just strings
+            fullWidth
+
+            renderInput={(params) => (
+              <TextField 
+                {...params}
+                label="Departure Airport" 
+                variant="outlined" 
+                error={formik.touched.departureAirport && Boolean(formik.errors.departureAirport)}
+                helperText={formik.touched.departureAirport && formik.errors.departureAirport}
+                InputLabelProps={{ shrink: true }} // This ensures the label doesn't overlap with the value
+                // You can adjust margins and padding as needed
+
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: 'new-password', // disable autocomplete and autofill
+                }}
+              />
+            )}
           />
-        )}
-      />
         </Grid> 
 
         {/* Regular dropdown for return airport */}
         <Grid item xs={3}> 
         <Autocomplete
-        id="returnAirport"
-        name="returnAirport"
-        options={returnAirports}
-        value={formik.values.returnAirport || null} // Ensure a valid default value
-        onChange={(event, newValue) => {
-          formik.setFieldValue('returnAirport', newValue || null); // Handle null case
-        }}
-        onBlur={() => formik.setFieldTouched('returnAirport')}
-        getOptionLabel={(option) => option} // Using the option string directly
-        fullWidth
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Return Airport"
-            variant="outlined"
-            error={formik.touched.returnAirport && Boolean(formik.errors.returnAirport)}
-            helperText={formik.touched.returnAirport && formik.errors.returnAirport}
-            InputLabelProps={{ shrink: true }} // Ensures the label doesn't overlap with the value
-            inputProps={{
-              ...params.inputProps,
-              autoComplete: 'new-password', // Disables autocomplete and autofill
+            id="returnAirport"
+            name="returnAirport"
+            options={returnAirports}
+            isOptionEqualToValue={(option, value) => option === value} // Custom equality check
+            value={formik.values.returnAirport || null} // Ensure a valid default value
+            onChange={(event, newValue) => {
+              // Ensure that the newValue is a string or null/undefined.
+              // If your options are objects, you may need to extract the string value.
+              formik.setFieldValue('returnAirport', newValue);
             }}
-          />
-        )}
-      />
+
+            onBlur={() => formik.setFieldTouched('returnAirport')}
+            getOptionLabel={(option) => option} // if your options are just strings
+
+            fullWidth
+
+            renderInput={(params) => (
+              <TextField 
+                {...params}
+                label="ReturnAirport" 
+                variant="outlined" 
+                error={formik.touched.returnAirport && Boolean(formik.errors.returnAirport)}
+                helperText={formik.touched.returnAirport && formik.errors.returnAirport}
+                InputLabelProps={{ shrink: true }} // This ensures the label doesn't overlap with the value
+                // You can adjust margins and padding as needed
+
+                inputProps={{
+                  ...params.inputProps,
+                  autoComplete: 'new-password', // disable autocomplete and autofill
+                }}
+              />
+            )}
+
+          /> 
 
 
         </Grid> 
