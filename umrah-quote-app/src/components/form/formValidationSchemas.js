@@ -68,7 +68,8 @@ export const validationSchemas = [
       .required('Makkah hotel is required'),
     nightsInMakkah: Yup.number()
       .required('Number of nights in Makkah is required')
-      .positive('Number of nights must be greater than zero')
+      .positive('Number of nights must be positive')
+      .min(0)
       .integer('Number of nights must be an integer'),
     makkahHotelRating: Yup.string()
       .required('Makkah hotel rating is required'),
