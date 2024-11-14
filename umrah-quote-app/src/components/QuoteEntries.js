@@ -11,6 +11,7 @@ import {
   Button,
   Checkbox,
 } from '@mui/material';
+import './App.css';
 
 function QuoteEntries() {
   const [quotes, setQuotes] = useState([]);
