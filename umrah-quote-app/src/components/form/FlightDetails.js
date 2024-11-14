@@ -32,33 +32,7 @@ const returnAirports = [
 
 
 
-const FormikMuiTextField = ({ formik, name, label, type = 'text', xs = 12, sm }) => {
-  return (
-    <Grid item xs={xs} sm={sm}>
-      <TextField
-        fullWidth
-        variant="outlined"
-        margin="normal"
-        id={name}
-        name={name}
-        label={label}
-        type={type}
-        value={formik.values[name]}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched[name] && Boolean(formik.errors[name])}
-        helperText={formik.touched[name] && formik.errors[name]}
-        disabled={name === "totalPassengers"} // Disable the field for totalPassengers
-        select={type === "select"}
-        SelectProps={{ native: true }}
-      >
-        {type === "select" && ['Option1', 'Option2', 'Option3'].map(option => (
-          <option key={option} value={option}>{option}</option>
-        ))}
-      </TextField>
-    </Grid>
-  );
-}; 
+
 
 
 
@@ -108,13 +82,40 @@ useEffect(() => {
 console.log(formik.values)
  return (
   <LocalizationProvider adapterLocale={'en-GB'} dateAdapter={AdapterLuxon}> 
-      <Typography variant="h5" gutterBottom> 
+      <Typography variant="h6" gutterBottom> 
         Flight Details
       </Typography> 
       <Grid container spacing={2}>
         {/* First row */}
-        <FormikMuiTextField formik={formik} name="airline" label="Airline" xs={3} /> 
-        <FormikMuiTextField formik={formik} name="flightType" label="Direct flight or indirect" xs={3} /> 
+        <Grid item xs={3}>
+        <TextField
+            fullWidth
+            label="Airline"
+            name="airline"
+            value={formik.values.airline}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.airline && Boolean(formik.errors.airline)}
+            helperText={formik.touched.airline && formik.errors.airline}
+
+            
+         
+          />        
+          </Grid>
+          <Grid item xs={3}>
+        <TextField
+            fullWidth
+            label="Direct or indirect flight"
+            name="flightType"
+            value={formik.values.flightType}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.flightType && Boolean(formik.errors.flightType)}
+            helperText={formik.touched.flightType && formik.errors.flightType}
+         
+          />        
+          </Grid>
+ 
         <Grid item xs={3}> 
         <Autocomplete
         id="departureAirport"
