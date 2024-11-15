@@ -12,6 +12,7 @@ import PackageDetails from './form/PackageDetails';
 import PassengerDetails from './form/PassengerDetails';
 import FlightDetails from './form/FlightDetails';
 import HotelDetails from './form/HotelDetails';
+import OtherDetails from './form/OtherDetails';
 import './App.css';
 
 
@@ -77,10 +78,13 @@ function QuoteBuilder() {
             totalRoomsMadinah: 0,
             extraInfantBedsMadinah: 0,
             totalBedsMadinah: 0,
-            visa: false,
-            transport: false,
-            transportBy: '',
-            ziaraat: false,
+            visa: '',
+            otherVisa: '',
+            transportByRoad: '',
+            transportByTrain: '',
+            ziaraat: '',
+            lateCheckIn: false,
+            otherInfo: '',
             flightRateAdult: 0,
             flightRateYouth: 0,
             flightRateChild: 0,
@@ -239,6 +243,7 @@ function QuoteBuilder() {
             case 3: return <PassengerDetails formik={formik} />;
             case 4: return <FlightDetails formik={formik} />;
             case 5: return <HotelDetails formik={formik} />;
+            case 6: return <OtherDetails formik={formik} />;
             default: return <div>Step {step + 1}</div>;
         }
     };

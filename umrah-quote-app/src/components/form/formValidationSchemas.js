@@ -90,7 +90,51 @@ export const validationSchemas = [
       .required('Total beds in Makkah are required')
       .positive('Total beds must be greater than zero')
       .integer('Total beds must be an integer'),
+   madinahHotel: Yup.string()
+      .required('Makkah hotel is required'),
+    nightsInMadinah: Yup.number()
+      .required('Number of nights in Makkah is required')
+      .positive('Number of nights must be positive')
+      .min(0)
+      .integer('Number of nights must be an integer'),
+    madinahHotelRating: Yup.string()
+      .required('Madinah hotel rating is required'),
+    madinahCheckInDate: Yup.date()
+      .nullable(), // Not required, allows null
+    madinahCheckOutDate: Yup.date()
+      .nullable(), // Not required, allows null
+    madinahRoomType: Yup.string()
+      .required('Madinah room type is required'),
+    madinahBoardType: Yup.string()
+      .required('Madinah board type is required'),
+    totalRoomsMadinah: Yup.number()
+      .nullable(), // Not required
+    extraInfantBedsMadinah: Yup.number()
+      .nullable() // Not required, default value can be handled separately in your form setup
+      .default(0),
+    totalBedsMadinah: Yup.number()
+      .required('Total beds in Madinah are required')
+      .positive('Total beds must be greater than zero')
+      .integer('Total beds must be an integer'),
+
   }),
+
+  Yup.object({
+    visa: Yup.string().nullable(),
+    otherVisa: Yup.string().nullable(),
+    transportByRoad: Yup.array()
+      .of(Yup.string())
+      .min(1, 'At least one transport option is required')
+      .required('Transport by road is required'),
+    transportByTrain: Yup.array()
+      .of(Yup.string())
+      .nullable(),
+    ziaraat: Yup.array()
+      .of(Yup.string())
+      .nullable(),
+    lateCheckIn: Yup.boolean().nullable(),
+    otherInfo: Yup.string().nullable(),
+  })
 
 ];
 

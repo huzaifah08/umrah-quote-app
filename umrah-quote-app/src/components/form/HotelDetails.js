@@ -582,8 +582,8 @@ const getTotalMadinahBeds = useCallback(() => {
               readOnly: true,
             }}
             onBlur={formik.handleBlur}
-            error={formik.touched.madinahBoardType && Boolean(formik.errors.madinahBoardType)}
-            helperText={formik.touched.madinahBoardType && formik.errors.madinahBoardType}
+            //error={formik.touched.madinahBoardType && Boolean(formik.errors.madinahBoardType)}
+            //helperText={formik.touched.madinahBoardType && formik.errors.madinahBoardType}
             fullWidth
           />
         </Grid>
