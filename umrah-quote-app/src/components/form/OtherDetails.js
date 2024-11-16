@@ -100,8 +100,19 @@ function OtherDetails({ formik }) {
                   <Checkbox
                     name="transportByRoad"
                     value={option}
-                    checked={formik.values.transportByRoad?.includes(option) || false}
-                    onChange={formik.handleChange}
+                    checked={formik.values.transportByRoad.includes(option)}
+                      onChange={(event) => {
+                      const { value, checked } = event.target;
+                      let newArray = [...formik.values.transportByRoad];
+                      
+                      if (checked) {
+                        newArray.push(value);
+                      } else {
+                        newArray = newArray.filter((item) => item !== value);
+                      }
+                      
+                      formik.setFieldValue('transportByRoad', newArray);
+                    }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -132,8 +143,20 @@ function OtherDetails({ formik }) {
                   <Checkbox
                     name="transportByTrain"
                     value={option}
-                    checked={formik.values.transportByTrain?.includes(option) || false}
-                    onChange={formik.handleChange}
+                    checked={formik.values.transportByTrain.includes(option)}
+                      onChange={(event) => {
+                      const { value, checked } = event.target;
+                      let newArray = [...formik.values.transportByTrain];
+                      
+                      if (checked) {
+                        newArray.push(value);
+                      } else {
+                        newArray = newArray.filter((item) => item !== value);
+                      }
+                      
+                      formik.setFieldValue('transportByTrain', newArray);
+                    }}
+                    
                   />
                 }
                 label={option}
@@ -155,8 +178,19 @@ function OtherDetails({ formik }) {
                   <Checkbox
                     name="ziaraat"
                     value={option}
-                    checked={formik.values.ziaraat?.includes(option) || false}
-                    onChange={formik.handleChange}
+                    checked={formik.values.ziaraat.includes(option)}
+                      onChange={(event) => {
+                      const { value, checked } = event.target;
+                      let newArray = [...formik.values.ziaraat];
+                      
+                      if (checked) {
+                        newArray.push(value);
+                      } else {
+                        newArray = newArray.filter((item) => item !== value);
+                      }
+                      
+                      formik.setFieldValue('ziaraat', newArray);
+                    }}
                   />
                 }
                 label={option}
