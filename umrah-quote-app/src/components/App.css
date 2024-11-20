@@ -50,21 +50,10 @@
 
 /* Content Area Styling */
 .App-content {
-  flex-grow: 1; /* Allow content area to grow */
-  width: 100%;
-  max-width: 1300px; /* Set a max-width for content */
-  margin: 20px auto; /* Center the content with auto margins */
-  padding: 20px; /* Add some padding */
+  background-color: #FCFCFC; /* Main content area background color */
+  padding: 20px;
+  border-radius: 8px;
 }
-
-
-
-
-
-
-
-
-
 
 
 /* Animation for the logo */
@@ -75,4 +64,27 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #FCFCFC; /* Main background color for the entire app */
+}
+
+
+
+
+
+.drawer {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+.drawer-paper {
+  width: 240px;
+}
+
+.toolbar {
+  min-height: 64px;
 }
