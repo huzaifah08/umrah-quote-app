@@ -2,12 +2,21 @@ import { createTheme } from '@mui/material/styles';
 
 // Create a custom theme.
 const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#25327B',
-      },
-      // Add your color and typography overrides here
+  palette: {
+    primary: {
+      main: '#25327B', // Your primary color
     },
+    secondary: {
+      main: '#137191', // Your secondary color
+    },
+    background: {
+      default: '#f4f6f8', // Light grey background
+    },
+  },
+  typography: {
+    fontFamily: 'Roboto, Arial, sans-serif',
+  },
+
     components: {
       
       MuiButton: {
