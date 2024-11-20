@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/afflogo.png'; // Adjust the path as necessary
 import logoutIcon from '../assets/logout.png'; // Adjust the path as necessary
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 // Pass isLoggedIn and onLogout as props
 function Header({ isLoggedIn, onLogout }) {
   const navigate = useNavigate(); // To programmatically navigate after logging out

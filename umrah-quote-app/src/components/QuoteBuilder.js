@@ -21,6 +21,9 @@ import './App.css';
 //import { Settings, DateTime } from 'luxon';
 //Settings.defaultLocale = 'en-GB'; // Set Luxon to use the UK locale globally
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+console.log("API_BASE_URL:", API_BASE_URL);
+
 
 const TOTAL_STEPS = 8;
 
@@ -153,9 +156,10 @@ function QuoteBuilder() {
         });
     
         try {
-            const response = await fetch('http://localhost:3001/submit-quote', {
+            const response = await fetch(`${API_BASE_URL}/api/submit-quote`, {
                 method: 'POST',
                 body: formData,  // Use FormData instance
+                
             });
             const data = await response.json();
     

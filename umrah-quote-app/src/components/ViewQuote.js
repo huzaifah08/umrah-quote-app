@@ -19,6 +19,8 @@ import {
   } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function ViewQuote() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function ViewQuote() {
     // Fetch the quote details
     const fetchQuote = async () => {
         try {
-          const response = await fetch(`http://localhost:3001/quote/${id}`);
+          const response = await fetch(`${API_BASE_URL}/api/quote/${id}`);
           const data = await response.json();
           setQuote(data);
         } catch (error) {
@@ -40,7 +42,7 @@ function ViewQuote() {
       // Fetch version history
       const fetchVersionHistory = async () => {
         try {
-          const response = await fetch(`http://localhost:3001/quote-versions/${id}`);
+          const response = await fetch(`${API_BASE_URL}/api/quote-versions/${id}`);
           const versions = await response.json();
           setVersionHistory(versions);
         } catch (error) {
@@ -58,7 +60,7 @@ function ViewQuote() {
 
   const handleRestoreVersion = async (versionId) => {
     try {
-      const response = await fetch(`http://localhost:3001/restore-quote-version/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/api/restore-quote-version/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ version_id: versionId }),

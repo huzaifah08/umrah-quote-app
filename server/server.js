@@ -7,18 +7,29 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const winston = require('winston');
 const app = express();
+const router = express.Router();
+
 app.use(express.json());
 app.use(cors());
+app.use('/api', router); // Wrap all routes under '/api'
+
+
+const dotenv = require('dotenv');
+const envFile = process.env.NODE_ENV === 'production' ? '.env.prod' : '.env.dev';
+dotenv.config({ path: envFile });
+
+console.log(`Running in ${process.env.NODE_ENV} mode`);
+
 
 const JWT_SECRET = crypto.randomBytes(32).toString('hex');
 console.log('Generated JWT Secret:', JWT_SECRET);
 
 const db = mysql2.createPool({
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: '',
-  database: 'umrahquotedb',
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
 });
 
 const storage = multer.diskStorage({
@@ -53,13 +64,17 @@ db.getConnection((err, connection) => {
 });
 
 app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { usernameOrEmail, password } = req.body;
 
   try {
-    // Lookup the user in the database
-    const [rows] = await db.query('SELECT id, username, password_hash FROM users WHERE username = ?', [username]);
+    // Lookup the user in the database by username or email
+    const [rows] = await db.query(
+      'SELECT id, username, email, password_hash FROM users WHERE username = ? OR email = ?',
+      [usernameOrEmail, usernameOrEmail]
+    );
+
     if (rows.length === 0) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: 'Invalid username/email or password' });
     }
 
     const user = rows[0];
@@ -67,39 +82,55 @@ app.post('/login', async (req, res) => {
     // Compare submitted password with stored password hash
     const match = await bcrypt.compare(password, user.password_hash);
     if (!match) {
-      return res.status(401).json({ message: 'Invalid username or password' });
+      return res.status(401).json({ message: 'Invalid username/email or password' });
     }
 
+    // Generate and return a JWT token
     const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '24h' });
-    console.log('Generated JWT:', token); // Log the generated token
     res.json({ token });
-
-  
-
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Login error:', error.message);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
+
+
 app.post('/register', async (req, res) => {
-    const { username, password, email } = req.body;
-  
-    try {
-      // Hash the password
-      const hashedPassword = await bcrypt.hash(password, 10); // the number 10 here is the salt rounds
-  
-      // Insert the new user into the database
-      // (You should also check if the user already exists and handle that accordingly)
-      const [result] = await db.query('INSERT INTO users (username, password_hash, email) VALUES (?, ?, ?)', [username, hashedPassword, email]);
-  
-      res.status(201).json({ message: 'User created!', userId: result.insertId });
-    } catch (error) {
-      res.status(500).json({ message: error.message });
+  const { firstName, lastName, username, password, email, recaptchaToken } = req.body;
+
+  try {
+    // Verify reCAPTCHA token
+    const response = await axios.post(`https://www.google.com/recaptcha/api/siteverify`, null, {
+      params: {
+        secret: '6Lc-UYUqAAAAAMuaBrAEBYDxXSWgWufsvcMXAz-J',
+        response: recaptchaToken,
+      },
+    });
+
+    if (!response.data.success || response.data.score < 0.5) {
+      return res.status(400).json({ message: 'reCAPTCHA validation failed. Please try again.' });
     }
-  });
+
+    // Continue with registration
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const [result] = await db.query('INSERT INTO users (first_name, last_name, username, password_hash, email) VALUES (?, ?, ?, ?, ?)', [
+      firstName,
+      lastName,
+      username,
+      hashedPassword,
+      email,
+    ]);
+    res.status(201).json({ message: 'User registered successfully!' });
+  } catch (error) {
+    console.error('Error during registration:', error);
+    res.status(500).json({ message: 'An error occurred. Please try again.' });
+  }
+});
 
 
-app.post('/submit-quote', upload.single('flightTimeUpload'), async (req, res) => {
+
+app.post('/api/submit-quote', upload.single('flightTimeUpload'), async (req, res) => {
   console.log(req.body)
     const { 
       // Destructure your form fields here
@@ -382,7 +413,7 @@ app.post('/submit-quote', upload.single('flightTimeUpload'), async (req, res) =>
   });
   
 
-app.patch('/update-quote-status/:id', async (req, res) => {
+app.patch('/api/update-quote-status/:id', async (req, res) => {
     const { id } = req.params;
     const { quoteAccepted } = req.body;
   
@@ -420,7 +451,7 @@ const logger = winston.createLogger({
   ],
 });
 
-app.get('/umrah-quotes', async (req, res) => {
+app.get('/api/umrah-quotes', async (req, res) => {
   try {
     const [rows] = await db.query(
       'SELECT id, quote_accepted, consultant_initials, first_name, last_name, email, phone_number, departure_date, return_date, total_nights, grand_total, created_at FROM umrah_quotes'
@@ -432,7 +463,7 @@ app.get('/umrah-quotes', async (req, res) => {
   }
 });
 
-app.get('/quote/:id', async (req, res) => {
+app.get('/api/quote/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const [rows] = await db.query('SELECT * FROM umrah_quotes WHERE id = ?', [id]);
@@ -447,7 +478,7 @@ app.get('/quote/:id', async (req, res) => {
 });
 
 
-app.patch('/update-quote/:id', async (req, res) => {
+app.patch('/api/update-quote/:id', async (req, res) => {
   const { id } = req.params;
   const updatedFields = req.body;
 
@@ -477,7 +508,7 @@ app.patch('/update-quote/:id', async (req, res) => {
 });
 
 // Endpoint to Get Version History for a Quote
-app.get('/quote-versions/:id', async (req, res) => {
+app.get('/api/quote-versions/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -493,7 +524,7 @@ app.get('/quote-versions/:id', async (req, res) => {
 });
 
 // Endpoint to Restore a Previous Version
-app.post('/restore-quote-version/:id', async (req, res) => {
+app.post('/api/restore-quote-version/:id', async (req, res) => {
   const { id } = req.params;
   const { version_id } = req.body;
 
@@ -525,7 +556,7 @@ app.post('/restore-quote-version/:id', async (req, res) => {
 
 
 
-app.post('/submit-date', async (req, res) => {
+app.post('/api/submit-date', async (req, res) => {
   const { selectedDate } = req.body;
 
   try {
@@ -547,7 +578,7 @@ app.post('/submit-date', async (req, res) => {
 
 
 
-app.post('/submit-flight-details', async (req, res) => {
+app.post('/api/submit-flight-details', async (req, res) => {
 
   console.log(req.body);
   
@@ -618,7 +649,7 @@ app.post('/submit-flight-details', async (req, res) => {
 
 
 // Start the server
-const PORT = 3001; // Your server's port
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

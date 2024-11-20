@@ -13,6 +13,10 @@ import {
 } from '@mui/material';
 import './App.css';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+console.log("API_BASE_URL:", API_BASE_URL);
+console.log("API_BASE_URL_PROCESS:", process.env.REACT_APP_API_BASE_URL);
+
 function QuoteEntries() {
   const [quotes, setQuotes] = useState([]);
   const navigate = useNavigate();
@@ -21,7 +25,7 @@ function QuoteEntries() {
     // Fetch quotes from the backend API
     const fetchQuotes = async () => {
       try {
-        const response = await fetch('http://localhost:3001/umrah-quotes'); // Adjust the URL to your API endpoint
+        const response = await fetch(`${API_BASE_URL}/api/umrah-quotes`); // Adjust the URL to your API endpoint
         const data = await response.json();
         setQuotes(data);
       } catch (error) {
@@ -38,7 +42,7 @@ function QuoteEntries() {
   const handleQuoteAcceptedChange = async (id, isChecked) => {
     try {
       // Update the quote_accepted status in the backend
-      const response = await fetch(`http://localhost:3001/update-quote-status/${id}`, {
+          const response = await fetch(`${API_BASE_URL}/api/update-quote-status/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ quoteAccepted: isChecked }),

@@ -4,6 +4,8 @@ import { EditNote, PlaylistAddCheck, Group, Settings, Logout } from '@mui/icons-
 import { useNavigate, useLocation } from 'react-router-dom';
 import logo from '../assets/afflogo.png'; // Ensure the logo path is correct
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
 function Sidebar({ onLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
