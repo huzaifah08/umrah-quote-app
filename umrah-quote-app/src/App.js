@@ -36,7 +36,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Router>
+      <Router basename={process.env.REACT_APP_PUBLIC_URL}>
       <div
             style={{
               flexGrow: 1,
