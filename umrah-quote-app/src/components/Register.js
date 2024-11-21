@@ -5,7 +5,7 @@ import { Box, TextField, Button, Typography, Grid } from '@mui/material';
 import afflogo from '../assets/afflogo.png';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
+console.log(API_BASE_URL)
 function Register({ onUserRegistered }) {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
