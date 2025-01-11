@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: /server
+         working-directory: ./server/
 
     steps:
       # Step 1: Checkout the code
@@ -22,7 +22,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          cache-dependency-path: server/package-lock.json
+          cache-dependency-path: './server/package-lock.json'
           node-version: 20.12.1 # Use your desired Node.js version
 
       # Step 3: Install dependencies
