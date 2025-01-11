@@ -29,13 +29,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Step 4: Build the app
-      - name: Build the app
-        run: npm run build
-         with:
-            cache-dependency-path: './umrah-quote-app/package-lock.json'
 
-      # Step 5: Deploy build files to FastComet via SFTP
+
+
+      # Step 4: Deploy build files to FastComet via SFTP
       - name: Deploy via SFTP
         uses: appleboy/scp-action@v0.1.5
         with:
@@ -43,4 +40,4 @@ jobs:
           username: diamondr
           password: ${{ secrets.FASTCOMET_PASSWORD }} # Set this in GitHub Secrets
           source: build/ # Adjust if necessary
-          target: /home4/diamondr/admin.afftravelnet.com/ # Path to your app folder
+          target: /home4/diamondr/admin.afftravelnet.com/server # Path to your app folder
