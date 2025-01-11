@@ -19,6 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
+          cache-dependency-path: server/package-lock.json
           node-version: 20.12.1 # Use your desired Node.js version
 
       # Step 3: Install dependencies
