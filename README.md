@@ -1,8 +1,5 @@
 
-Here's the README formatted in GitHub code:
 
-markdown
-Copy code
 # Umrah Quote App
 
 The **Umrah Quote App** is a React-based web application designed to streamline the process of creating custom Umrah packages for customers. The app enables travel consultants to input customer details, select flight and hotel options, and generate a detailed quote for Umrah trips.
