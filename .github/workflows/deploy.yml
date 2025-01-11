@@ -32,6 +32,8 @@ jobs:
       # Step 4: Build the app
       - name: Build the app
         run: npm run build
+         with:
+            cache-dependency-path: './umrah-quote-app/package-lock.json'
 
       # Step 5: Deploy build files to FastComet via SFTP
       - name: Deploy via SFTP
